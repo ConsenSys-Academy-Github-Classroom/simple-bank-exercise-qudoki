@@ -11,12 +11,13 @@ with `npm install -g truffle`.
 const { catchRevert } = require("./exceptionsHelpers.js");
 var SimpleBank = artifacts.require("./SimpleBank.sol");
 
+// Class "contract" emcompasses all tests below
 contract("SimpleBank", function (accounts) {
   const [contractOwner, alice] = accounts;
-  const deposit = web3.utils.toBN(2);
+  const deposit = web3.utils.toBN(2); // big number
 
   beforeEach(async () => {
-    instance = await SimpleBank.new();
+    instance = await SimpleBank.new(); // new contract deployed for tests
   });
 
   it("ready to be solved!", async() => {
