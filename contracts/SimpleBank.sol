@@ -29,7 +29,7 @@ contract SimpleBank {
      */
     
     // Add an argument for this event, an accountAddress
-    event LogEnrolled();
+    event LogEnrolled(address accountAddress);
 
     // Add 2 arguments for this event, an accountAddress and an amount
     event LogDepositMade();
@@ -47,7 +47,7 @@ contract SimpleBank {
     // Added so ether sent to this contract is reverted if the contract fails
     // otherwise, the sender's money is transferred to contract
     function () external payable {
-        revert();
+      revert();
     }
 
     /// @notice Get balance
@@ -63,14 +63,15 @@ contract SimpleBank {
     // Emit the appropriate event
     function enroll() public returns (bool){
       // 1. enroll of the sender of this transaction
-      enrolled[msg.sender] = true;
+      enrolled[msg.sender] = true; // this is the only time writing, so multiple msg.sender doesn't waste gas
+      emit LogEnrolled(msg.sender);
+      return enrolled[msg.sender];
     }
 
     /// @notice Deposit ether into bank
     /// @return The balance of the user after the deposit is made
     function deposit() public returns (uint) {
       // 1. Add the appropriate keyword so that this function can receive ether
-    
       // 2. Users should be enrolled before they can make deposits
 
       // 3. Add the amount to the user's balance. Hint: the amount can be
