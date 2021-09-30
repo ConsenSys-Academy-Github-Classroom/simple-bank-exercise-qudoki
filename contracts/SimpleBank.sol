@@ -30,13 +30,13 @@ contract SimpleBank {
     event LogEnrolled(address accountAddress);
 
     // Add 2 arguments for this event, an accountAddress and an amount
-    event LogDepositMade(address accountAddress, uint256 balance);
+    event LogDepositMade(address accountAddress, uint256 amount);
 
     // Create an event called LogWithdrawal
     // Hint: it should take 3 arguments: an accountAddress, withdrawAmount and a newBalance
     event LogWithdrawal(
         address accountAddress,
-        uint256 balance,
+        uint256 withdrawAmount,
         uint256 newBalance
     );
 
@@ -82,7 +82,7 @@ contract SimpleBank {
         require(enrolled[msg.sender]);
         // 3. Add the amount to the user's balance. Hint: the amount can be
         //    accessed from of the global variable `msg`
-        balances[msg.sender] += msg.value;
+        balances[msg.sender] = balances[msg.sender] + msg.value;
         // 4. Emit the appropriate event associated with this function
         emit LogDepositMade(msg.sender, msg.value);
         // 5. return the balance of sndr of this transaction
@@ -102,6 +102,9 @@ contract SimpleBank {
         require(balances[msg.sender] >= withdrawAmount);
         // 2. Transfer Eth to the sender and decrement the withdrawal amount from
         //    sender's balance
+        balances[msg.sender] = balances[msg.sender] - withdrawAmount;
         // 3. Emit the appropriate event for this message
+        emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+        return balances[msg.sender];
     }
 }
